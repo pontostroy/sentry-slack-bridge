@@ -1,0 +1,11 @@
+- name: firs 
+    options:
+        path: "first"
+        channel: "first"
+        webhook: "https://hooks.slack.com/services/11111/1111111/bGkghRj36nA80t6Rg94XOzgB"
+  
+- name: second
+    options:
+        path: "second"
+        channel: "second"
+        webhook: "https://hooks.slack.com/services/11111/1111111/xJkMfTjtSnA80t6Rg94XOzOY"
