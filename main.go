@@ -25,6 +25,7 @@ func parseGhPost(rw http.ResponseWriter, request *http.Request) {
 	}
 
 	var message string = ""
+    var lambda string = ""
 	var webhookUrl string = ""
 	var channel string = ""
 	for _, v := range config {
@@ -46,13 +47,16 @@ func parseGhPost(rw http.ResponseWriter, request *http.Request) {
 	}
 
 	if len(t.Event.Exception.Values) > 0 {
-		message = t.Event.Exception.Values[0].Value
+		message = t.Event.Exception.Values[0].Value + "\n" + t.Culprit
 	} else {
-		message = t.Message
+		message = t.Message + " " + t.Culprit
+	}
+    if len(t.Event.Extra.Lambda.FunctionName) > 0 {
+		lambda = t.Event.Extra.Lambda.FunctionName
 	}
 
 	attachment1 := slack.Attachment{}
-	attachment1.AddField(slack.Field{Title: "Project", Value: t.Event.Environment + " " + t.Culprit})
+	attachment1.AddField(slack.Field{Title: "Project", Value: t.Event.Environment + " " + t.ProjectName + " " + lambda})
 	attachment1.AddField(slack.Field{Title: "Error", Value: message})
 	payload := slack.Payload{
 		Text:        "Sentry error " + t.URL,
