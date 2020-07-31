@@ -47,7 +47,7 @@ func parseGhPost(rw http.ResponseWriter, request *http.Request) {
 	}
 
 	if len(t.Event.Exception.Values) > 0 {
-		message = t.Event.Exception.Values[0].Value + "\n" + t.Culprit
+		message = t.Message + " "+ t.Event.Exception.Values[0].Value + "\n" + t.Culprit
 	} else {
 		message = t.Message + " " + t.Culprit
 	}
@@ -56,7 +56,7 @@ func parseGhPost(rw http.ResponseWriter, request *http.Request) {
 	}
 
 	attachment1 := slack.Attachment{}
-	attachment1.AddField(slack.Field{Title: "Project", Value: t.Event.Environment + " " + t.ProjectName + " " + lambda})
+	attachment1.AddField(slack.Field{Title: "Project", Value: t.Event.Environment + " " + t.ProjectSlug + " " + lambda})
 	attachment1.AddField(slack.Field{Title: "Error", Value: message})
 	payload := slack.Payload{
 		Text:        "Sentry error " + t.URL,
