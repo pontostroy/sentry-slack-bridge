@@ -65,7 +65,11 @@ func parseGhPost(rw http.ResponseWriter, request *http.Request) {
 		IconEmoji:   ":aws:",
 		Attachments: []slack.Attachment{attachment1},
 	}
-	slack.Send(webhookUrl, "", payload)
+    arr := slack.Send(webhookUrl, "", payload)
+    fmt.Println("Send message to ", webhookUrl)
+    if len(arr) > 0 {
+      fmt.Printf("error: %s\n", arr)
+    }
 
 }
 
